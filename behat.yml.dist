@@ -1,0 +1,20 @@
+default:
+  suites:
+    default:
+      contexts:
+      - Ubirak\RestApiBehatExtension\RestApiContext
+      - Ubirak\RestApiBehatExtension\Json\JsonContext
+      - FeatureContext:
+          kernel: '@kernel'
+
+  extensions:
+    Behat\Symfony2Extension:
+      kernel:
+        bootstrap: 'features/bootstrap/bootstrap.php'
+        path: 'src/Kernel.php'
+        class: 'App\Kernel'
+
+    Ubirak\RestApiBehatExtension\Extension:
+      rest:
+        base_url: http://nginx
+        store_response: true

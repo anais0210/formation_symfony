@@ -1,0 +1,125 @@
+swagger: "2.0"
+info:
+  description: "Formation WoW Swagger CRUD "
+  version: "1.0.0"
+  title: "Formation Anais"
+host: "formation.local"
+basePath: "/api"
+tags:
+- name: "Student"
+  description: ""
+  externalDocs:
+    description: "Find out more"
+    url: "http://formation.local"
+schemes:
+- "https"
+- "http"
+paths:
+  /student:
+    post:
+      tags:
+      - "student"
+      summary: "Add a new student"
+      description: ""
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Student object that needs to be added to the store"
+        required: true
+        schema:
+          $ref: "#/definitions/Student"
+      responses:
+        400:
+          description: "Bad request"
+        201:
+          description: "created"
+    put:
+      tags:
+      - "student"
+      summary: "Update an existing student"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: ""
+        required: true
+        schema:
+          $ref: "#/definitions/StudentId"
+      responses:
+        200:
+          description: "ok"
+        400:
+          description: "Bad request"
+        404:
+          description: "Student not found"
+    get:
+      tags:
+      - "student"
+      summary: "student list"
+      responses:
+        200:
+          description: "successful operation"
+        400:
+          description: "Bad request"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/StudentId"
+  /student/{studentId}:
+    parameters:
+    - name: "studentId"
+      in: "path"
+      description: "ID of student to return"
+      required: true
+      type: "string"
+      format: "uuid"
+    get:
+      tags:
+      - "student"
+      summary: "Find student by ID"
+      description: "Returns a single student"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Student"
+        404:
+          description: "not found"
+    delete:
+      tags:
+      - "student"
+      summary: "Deletes a student"
+      responses:
+        200:
+          description: "ok"
+        404:
+          description: "Not found"
+
+definitions:
+  Student:
+    type: "object"
+    properties:
+      lastname:
+        type: "string"
+        example: "paul"
+      firstname:
+        type: "string"
+      birthdate:
+        type: "string"
+        example: "2015-04-01"
+        format: "date"
+  StudentId:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+        format: "uuid"
+        example: "8b224afc-29ec-4d00-bc48-8b53cadfd4ed"
+      lastname:
+        type: "string"
+        example: "paul"
+      firstname:
+        type: "string"
+      birthdate:
+        type: "string"
+        example: "2015-04-01"
+        format: "date"

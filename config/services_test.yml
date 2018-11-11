@@ -1,0 +1,6 @@
+services:
+
+  Tests\DatabaseTest:
+    public: true
+    arguments:
+      - '@doctrine.orm.entity_manager'
