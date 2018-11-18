@@ -6,6 +6,7 @@ use App\Entity\Student;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
 class CreateStudentController
 {
@@ -17,7 +18,7 @@ class CreateStudentController
     }
 
     /**
-     * @Route("/", name="create-student")
+     * @Route("/student", name="create-student", methods={"POST"})
      */
     public function __invoke()
     {
@@ -50,12 +51,15 @@ class CreateStudentController
         }
 
         $student = new Student();
+
         $birthdate = new \DateTime( $data['birthdate'] );
-        $student = setLastname($lastname);
-        $student = setFirstname($firstname);
-        $student = setBirthdate($birthdate);
-        $em->persist( $student );
-        $em->flush();
+
+        $student->setLastname( $data['lastname'] );
+        $student->setFirstname( $data['firstname'] );
+        $student->setBirthdate( $birthdate );
+
+        $this->em->persist( $student );
+        $this->em->flush();
 
         $response->setStatusCode( 201 );
 

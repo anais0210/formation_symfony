@@ -16,11 +16,11 @@ class ListStudentControllerTest extends ControllerTestCase
 
 	public function testListStudentContentTypeJsonIsValid()
 	{
-		$response = $this->client->get('/student', ['exceptions' => FALSE]);
-		
-		$contentType = $response->getHeaderLine('Content-Type');
+		$response = $this->client->get('/student');
 
-		$this->assertEquals('application/json', $contentType);
+        $contentType = $response->getHeaderLine('Content-Type');
+
+        $this->assertEquals('application/json', $contentType);
 		$this->assertEquals(200, $response->getStatusCode());
 	}
 }

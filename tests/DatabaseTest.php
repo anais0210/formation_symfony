@@ -1,6 +1,6 @@
 <?php
 
-namespace Test;
+namespace Tests;
 
 use App\Model\Connection;
 use Doctrine\ORM\EntityManagerInterface;
@@ -9,7 +9,6 @@ use Doctrine\ORM\EntityManagerInterface;
 class DatabaseTest
 {
     private $connection;
-
 
     public function __construct(EntityManagerInterface $em)
     {

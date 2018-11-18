@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * @ORM\Entity
@@ -10,9 +11,12 @@ use Doctrine\ORM\Mapping as ORM;
 class Student
 {
     /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="string")
+     * @var \Ramsey\Uuid\UuidInterface
+     *
+     * @ORM\Id
+     * @ORM\Column(type="uuid", unique=true)
+     * @ORM\GeneratedValue(strategy="CUSTOM")
+     * @ORM\CustomIdGenerator(class="Ramsey\Uuid\Doctrine\UuidGenerator")
      */
     private $id;
 
@@ -31,9 +35,16 @@ class Student
      */
     private $birthdate;
 
-    public function getId(): ?int
+
+    public function __construct()
     {
-        return $this->id;
+        $this->birthdate= new \DateTime();
+    }
+
+
+    public function getId(): ?string
+    {
+        return $this->id->toString();
     }
 
     public function getFirstname(): ?string
@@ -62,12 +73,43 @@ class Student
 
     public function getBirthdate(): ?\DateTimeInterface
     {
-        return $this->date;
+        return $this->birthdate;
     }
 
     public function setBirthdate(\DateTimeInterface $birthdate): self
     {
         $this->birthdate = $birthdate;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Code[]
+     */
+    public function getCodes(): Collection
+    {
+        return $this->codes;
+    }
+
+    public function addCode(Code $code): self
+    {
+        if (!$this->codes->contains($code)) {
+            $this->codes[] = $code;
+            $code->setCompletedMissionGainId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCode(Code $code): self
+    {
+        if ($this->codes->contains($code)) {
+            $this->codes->removeElement($code);
+            // set the owning side to null (unless already changed)
+            if ($code->getCompletedMissionGainId() === $this) {
+                $code->setCompletedMissionGainId(null);
+            }
+        }
 
         return $this;
     }

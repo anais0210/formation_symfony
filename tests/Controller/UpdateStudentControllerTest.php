@@ -25,7 +25,7 @@ class UpdateStudentControllerTest extends ControllerTestCase
 
 	public function testUpdateStudentNotFound()
 	{	
-		$response = $this->client->put('/student', ['exceptions' => FALSE, 'body' => '{"id": "25769c6c-d34d-4bfe-ba98-e0ee856f3e7a", "lastname": "paul","firstname": "string", "birthdate": "2015-04-01"}']);
+		$response = $this->client->put('/student', ['exceptions' => FALSE, 'body' => '{"id": "a4644de8-d088-11e8-a8d5-f2801f1b9fc1", "lastname": "paul","firstname": "string", "birthdate": "2015-04-01"}']);
 		
 		$this->assertEquals(404, $response->getStatusCode());
 	}

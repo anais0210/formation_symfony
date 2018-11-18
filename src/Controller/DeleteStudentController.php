@@ -2,12 +2,14 @@
 
 namespace App\Controller;
 
+
+use App\Entity\Student;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use App\Repository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
 class DeleteStudentController extends Controller
 {
@@ -19,18 +21,22 @@ class DeleteStudentController extends Controller
     }
 
     /**
-     * @Route("/student/{id}", name="delete")
+     * @Route("/student/{id}", name="delete_student", methods={"DELETE"})
      */
-    public function __invoke()
+    public function __invoke($id)
     {
         $response = new JsonResponse();
 
-        try {
-            $this->em->getRepository( Student::class )->find( $this->getParameters( ['id'] ) );
-        } catch ( \Exception $e ) {
-            $response->setContent( $e->getMessage() );
-            $response->setStatusCode( 404 );
-        }
+        $student = $this->em->getRepository( Student::class )->find( $id );
+         if ($student != null) {
+             $student = $this->em->remove( $student );
+             $this->em->flush();
+         }
+
+        else{
+        $response->setContent( 'Student is not exist' );
+        $response->setStatusCode( 404 );
+    }
 
         return $response;
     }

@@ -2,6 +2,7 @@
 
 namespace Tests\Controller;
 
+use PHPUnit\Framework\TestCase;
 
 class GetStudentControllerTest extends ControllerTestCase
 

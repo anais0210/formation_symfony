@@ -6,7 +6,7 @@ namespace Tests\Controller;
 use Doctrine\ORM\EntityManagerInterface;
 use GuzzleHttp\Client;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
-use Test\DatabaseTest;
+use Tests\DatabaseTest;
 
 class ControllerTestCase extends KernelTestCase
 {

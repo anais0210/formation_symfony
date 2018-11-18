@@ -7,6 +7,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
 class UpdateStudentController extends Controller
 {
@@ -18,7 +19,7 @@ class UpdateStudentController extends Controller
     }
 
     /**
-     * @Route("/student", name="update-student")
+     * @Route("/student", name="update-student", methods={"PUT"})
      */
     public function __invoke()
     {
@@ -59,26 +60,21 @@ class UpdateStudentController extends Controller
             return $response;
         }
 
-
         $birthdate = new \DateTime( $data['birthdate'] );
-        $this->em->getRepository( Student::class )->find($data['id']);
+        $student = $this->em->getRepository( Student::class )->find($data['id']);
 
         if ($student == null) {
-            return $this->redirectionErreur404();
+            return new JsonResponse( 'User not found.', 404 );
         }
-        $student = new Student();
-        $birthdate = new \DateTime( $data['birthdate'] );
-        $student = setId($id);
-        $student = setLastname($lastname);
-        $student = setFirstname($firstname);
-        $student = setBirthdate($birthdate);
-        $em->persist( $student );
-        $em->flush();
-    }
 
-    public function redirectionErreur404()
-    {
-        header( "HTTP/1.0 404 Not Found" );
-        $response->setStatusCode( 404 );
+        $birthdate = new \DateTime( $data['birthdate'] );
+
+        $student->setLastname( $data['lastname'] );
+        $student->setFirstname( $data['firstname'] );
+        $student->setBirthdate( $birthdate );
+
+        $this->em->flush();
+
+        return new JsonResponse();
     }
 }
